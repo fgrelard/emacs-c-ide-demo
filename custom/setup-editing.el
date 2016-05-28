@@ -72,13 +72,13 @@
 
 ;; PACKAGE: smartparens
 (require 'smartparens-config)
-(setq sp-base-key-bindings 'paredit)
-(setq sp-autoskip-closing-pair 'always)
-(setq sp-hybrid-kill-entire-symbol nil)
-(sp-use-paredit-bindings)
+;; (setq sp-base-key-bindings 'paredit)
+;; (setq sp-autoskip-closing-pair 'always)
+;; (setq sp-hybrid-kill-entire-symbol nil)
+;; (sp-use-paredit-bindings)
 
-(show-smartparens-global-mode +1)
-(smartparens-global-mode 1)
+;; (show-smartparens-global-mode +1)
+;; (smartparens-global-mode 1)
 
 ;; PACKAGE: comment-dwim-2
 (global-set-key (kbd "M-;") 'comment-dwim-2)
@@ -255,7 +255,7 @@ indent yanked text (with prefix arg don't indent)."
           (message "Indented buffer.")))
       (whitespace-cleanup))))
 
-(global-set-key (kbd "C-c i") 'indent-region-or-buffer)
+;; (global-set-key (kbd "C-c i") 'indent-region-or-buffer)
 
 ;; add duplicate line function from Prelude
 ;; taken from prelude-core.el

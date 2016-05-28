@@ -17,14 +17,14 @@
     helm-gtags
     helm-projectile
     helm-swoop
-    ;; function-args
+    function-args
     clean-aindent-mode
     comment-dwim-2
     dtrt-indent
     ws-butler
     iedit
     yasnippet
-    smartparens
+    ;; smartparens
     projectile
     volatile-highlights
     undo-tree
@@ -56,8 +56,9 @@
 (windmove-default-keybindings)
 
 ;; function-args
-;; (require 'function-args)
-;; (fa-config-default)
+ (require 'function-args)
+(fa-config-default)
+(semantic-add-system-include "~/dgtal/dgtal-tutorials/include/" 'c++-mode)
 ;; (define-key c-mode-map  [(tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(tab)] 'company-complete)
 
@@ -65,8 +66,8 @@
 (require 'company)
 (add-hook 'after-init-hook 'global-company-mode)
 (delete 'company-semantic company-backends)
-(define-key c-mode-map  [(tab)] 'company-complete)
-(define-key c++-mode-map  [(tab)] 'company-complete)
+(define-key c-mode-map  [C-tab] 'company-complete)
+(define-key c++-mode-map  [C-tab] 'company-complete)
 ;; (define-key c-mode-map  [(control tab)] 'company-complete)
 ;; (define-key c++-mode-map  [(control tab)] 'company-complete)
 
@@ -137,14 +138,14 @@
 (yas-global-mode 1)
 
 ;; Package: smartparens
-(require 'smartparens-config)
-(setq sp-base-key-bindings 'paredit)
-(setq sp-autoskip-closing-pair 'always)
-(setq sp-hybrid-kill-entire-symbol nil)
-(sp-use-paredit-bindings)
+;; (require 'smartparens-config)
+;; (setq sp-base-key-bindings 'paredit)
+;; (setq sp-autoskip-closing-pair 'always)
+;; (setq sp-hybrid-kill-entire-symbol nil)
+;; (sp-use-paredit-bindings)
 
-(show-smartparens-global-mode +1)
-(smartparens-global-mode 1)
+;; (show-smartparens-global-mode +1)
+;; (smartparens-global-mode 1)
 
 ;; Package: projejctile
 (require 'projectile)
