@@ -299,7 +299,7 @@
 (load "pdf-tools")
 ;; If you want synctex support, this should be sufficient assuming
 ;; you are using LaTeX-mode
-(add-hook 'TeX-latex-mode-hook 'TeX-source-correlate-mode)
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
            #'TeX-view)
 (set-face-attribute 'default nil :height 110)
@@ -326,7 +326,5 @@
 (add-hook 'LaTeX-mode-hook 'company-auctex-init)
 (add-hook 'LaTeX-mode-hook 'global-auto-complete-mode)
 (add-hook 'TeX-mode-hook 'global-company-mode)
-(add-hook 'TeX-latex-mode-hook 'company-auctex)
-(add-hook 'TeX-latex-mode-hook 'company-auctex-init)
-(add-hook 'TeX-latex-mode-hook 'global-auto-complete-mode)
+(add-hook 'LaTeX-mode-hook 'reftex-mode)
 (require 'latex-pretty-symbols)
