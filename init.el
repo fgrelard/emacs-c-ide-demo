@@ -9,28 +9,56 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (defconst demo-packages
-  '(anzu
+  '(ac-c-headers
+    ac-math
+    anzu
+    auto-complete
+    buffer-move
+    clean-aindent-mode
+    comment-dwim-2
+    company-irony
+    company-irony-c-headers
     company
+    dtrt-indent
     duplicate-thing
+    flycheck-irony
+    flycheck
+    flymake-cppcheck
+    flymake-easy
+    function-args
     ggtags
-    helm
+    github-browse-file
     helm-gtags
     helm-projectile
     helm-swoop
-    function-args
-    clean-aindent-mode
-    comment-dwim-2
-    ;;dtrt-indent
-    ws-butler
+    helm
+    helm-core
+    async
     iedit
-    yasnippet
-    ;; smartparens
+    irony
+    latex-extra
+    auctex
+    latex-math-preview
+    latex-preview-pane
+    markdown-mode
+    math-symbol-lists
+    multiple-cursors
+    pdf-tools
+    let-alist
+    popup
     projectile
-    volatile-highlights
+    pkg-info
+    epl
+    dash
+    seq
+    swiper
+    ivy
+    tablist
     undo-tree
-    zygospore
-    flycheck
-    buffer-move))
+    volatile-highlights
+    ws-butler
+    yasnippet
+    zygospore))
 
 (defun install-packages ()
   "Install all required packages."
