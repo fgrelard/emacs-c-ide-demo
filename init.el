@@ -1,5 +1,5 @@
 (require 'package)
-(add-to-list 'package-archives
+1(add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
@@ -20,7 +20,7 @@
     function-args
     clean-aindent-mode
     comment-dwim-2
-    dtrt-indent
+    ;;dtrt-indent
     ws-butler
     iedit
     yasnippet
@@ -28,7 +28,9 @@
     projectile
     volatile-highlights
     undo-tree
-    zygospore))
+    zygospore
+    flycheck
+    buffer-move))
 
 (defun install-packages ()
   "Install all required packages."
@@ -47,32 +49,36 @@
 
 (add-to-list 'load-path "~/.emacs.d/custom")
 
+
+
 (require 'setup-helm)
 (require 'setup-helm-gtags)
 ;; (require 'setup-ggtags)
 (require 'setup-cedet)
-(require 'setup-editing)
+;;(require 'setup-editing)
 
+(setq-default c-basic-offset 4)
+(setq-default tab-width 4)
+
+(add-hook 'sh-mode-hook (lambda ()
+                          (setq tab-width 4)))
+
+(defun fix-c-indent-offset-according-to-syntax-context (key val)
+  ;; remove the old element
+  (setq c-offsets-alist (delq (assoc key c-offsets-alist) c-offsets-alist))
+  ;; new value
+  (add-to-list 'c-offsets-alist '(key . val)))
+
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode)
+              ;; indent
+              (fix-c-indent-offset-according-to-syntax-context 'substatement-open 0))
+            ))
 (windmove-default-keybindings)
 
-;; function-args
- (require 'function-args)
-(fa-config-default)
-(semantic-add-system-include "~/dgtal/dgtal-tutorials/include/" 'c++-mode)
-;; (define-key c-mode-map  [(tab)] 'company-complete)
-;; (define-key c++-mode-map  [(tab)] 'company-complete)
 
-;; company
-(require 'company)
-(add-hook 'after-init-hook 'global-company-mode)
-(delete 'company-semantic company-backends)
-(define-key c-mode-map  [C-tab] 'company-complete)
-(define-key c++-mode-map  [C-tab] 'company-complete)
-;; (define-key c-mode-map  [(control tab)] 'company-complete)
-;; (define-key c++-mode-map  [(control tab)] 'company-complete)
 
-;; company-c-headers
-(add-to-list 'company-backends 'company-c-headers)
 
 ;; hs-minor-mode for folding source code
 (add-hook 'c-mode-common-hook 'hs-minor-mode)
@@ -88,10 +94,11 @@
 ;; “python”: What Python developers use for extension modules
 ;; “java”: The default style for java-mode (see below)
 ;; “user”: When you want to define your own style
-(setq
- c-default-style "linux" ;; set style to "linux"
- )
-
+(defun my-c-mode-hook ()
+  (setq c-basic-offset 4
+        c-indent-level 4
+        c-default-style "bsd"))
+(add-hook 'c-mode-common-hook 'my-c-mode-hook)
 (global-set-key (kbd "RET") 'newline-and-indent)  ; automatically indent when press RET
 
 ;; activate whitespace-mode to view all whitespace characters
@@ -103,8 +110,8 @@
 ;; use space to indent by default
 (setq-default indent-tabs-mode nil)
 
-;; set appearance of a tab that is represented by 4 spaces
-(setq-default tab-width 4)
+;; set appearance of a tab that is represented by 2 spaces
+
 
 ;; Compilation
 (global-set-key (kbd "<f5>") (lambda ()
@@ -125,9 +132,6 @@
 (require 'clean-aindent-mode)
 (add-hook 'prog-mode-hook 'clean-aindent-mode)
 
-;; Package: dtrt-indent
-(require 'dtrt-indent)
-(dtrt-indent-mode 1)
 
 ;; Package: ws-butler
 (require 'ws-butler)
@@ -137,25 +141,68 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;; Package: smartparens
-;; (require 'smartparens-config)
-;; (setq sp-base-key-bindings 'paredit)
-;; (setq sp-autoskip-closing-pair 'always)
-;; (setq sp-hybrid-kill-entire-symbol nil)
-;; (sp-use-paredit-bindings)
 
-;; (show-smartparens-global-mode +1)
-;; (smartparens-global-mode 1)
 
-;; Package: projejctile
+
+;; Package: projectile
 (require 'projectile)
-(projectile-global-mode)
+(add-hook 'c++-mode-hook 'projectile-global-mode)
+(add-hook 'c-mode-hook 'projectile-global-mode)
+(define-key c++-mode-map (kbd "C-c h k") 'projectile-find-file)
 (setq projectile-enable-caching t)
 
 (require 'helm-projectile)
-(helm-projectile-on)
+(add-hook 'c++-mode-hook 'helm-projectile-on)
+(add-hook 'c-mode-hook 'helm-projectile-on)
 (setq projectile-completion-system 'helm)
-(setq projectile-indexing-method 'alien)
+;; (setq projectile-indexing-method 'alien)
+
+
+;; company
+(require 'company)
+(add-hook 'c++-mode-hook 'global-company-mode)
+(add-hook 'c-mode-hook 'global-company-mode)
+(delete 'company-semantic company-backends)
+(define-key c-mode-map  [C-tab] 'company-complete)
+(define-key c++-mode-map  [C-tab] 'company-complete)
+;; (define-key c-mode-map  [(control tab)] 'company-complete)
+;; (define-key c++-mode-map  [(control tab)] 'company-complete)
+
+;; company-c-headers
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's asynchronous function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+
+;; company-irony
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony))
+(global-set-key (kbd "M-RET") 'company-complete)
+
+(global-set-key (kbd "M-S-<mouse-1>") 'mc/add-cursor-on-click)
+
+
+(require 'flycheck)
+(global-flycheck-mode 1)
+
+(require 'buffer-move)
+(global-set-key (kbd "<C-S-up>")     'buf-move-up)
+(global-set-key (kbd "<C-S-down>")   'buf-move-down)
+(global-set-key (kbd "<C-S-left>")   'buf-move-left)
+(global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
+;; matching parentheses
+(setq show-paren-delay 0)
+(show-paren-mode 1)
 
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
@@ -164,7 +211,21 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(TeX-PDF-mode t)
+ '(TeX-engine (quote default))
+ '(TeX-save-query nil)
+ '(c-basic-offset 4)
+ '(flycheck-c/c++-gcc-executable nil)
+ '(flycheck-gcc-definitions (quote ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
+ '(flycheck-gcc-include-path (quote ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
+ '(flycheck-gcc-language-standard "c++11")
+ '(flycheck-gcc-openmp t)
+ '(irony-cdb-compilation-databases (quote (irony-cdb-clang-complete irony-cdb-libclang irony-cdb-json)))
+ '(lpr-command "gtklp")
+ '(pdf-latex-command "pdflatex")
+ '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
+ '(projectile-globally-ignored-files (quote ("TAGS")))
+ '(ps-lpr-command "gtklp"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -172,3 +233,50 @@
  ;; If there is more than one, they won't work right.
  '(font-lock-preprocessor-face ((t (:inherit font-lock-builtin-face)))))
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.ih\\'" . c++-mode))
+
+(eval-after-load "tex"
+  '(progn
+     (setcdr (assq 'output-pdf TeX-view-program-selection) '("PDF Tools"))
+     (add-to-list 'TeX-command-list '("Make" "make" TeX-run-compile nil t))))
+
+
+(defun my-tex-compile ()
+  (interactive)
+  (save-buffer)
+  (TeX-command "Make" 'TeX-master-file))
+
+
+(eval-after-load 'latex
+  '(define-key LaTeX-mode-map (kbd "<f1>") 'my-tex-compile))
+
+(eval-after-load 'plain-tex
+  '(define-key plain-TeX-mode-map (kbd "<f1>") 'my-tex-compile))
+
+(pdf-tools-install)
+(load "pdf-tools")
+;; If you want synctex support, this should be sufficient assuming
+;; you are using LaTeX-mode
+(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+(add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+           #'TeX-view)
+(set-face-attribute 'default nil :height 110)
+
+(require 'auto-complete)
+(add-to-list 'ac-modes 'latex-mode) ; beware of using 'LaTeX-mode instead
+(require 'ac-math) ; package should be installed first
+(defun my-ac-latex-mode () ; add ac-sources for latex
+   (setq ac-sources
+         (append '(ac-source-math-unicode
+           ac-source-math-latex
+           ac-source-latex-commands)
+                 ac-sources)))
+(add-hook 'LaTeX-mode-hook 'my-ac-latex-mode)
+(setq ac-math-unicode-in-math-p t)
+(ac-flyspell-workaround) ; fixes a known bug of delay due to flyspell (if it is there)
+(add-to-list 'ac-modes 'org-mode) ; auto-complete for org-mode (optional)
+(require 'auto-complete-config) ; should be after add-to-list 'ac-modes and hooks
+(ac-config-default)
+(setq ac-auto-start nil)            ; if t starts ac at startup automatically
+(setq ac-auto-show-menu t)
+(add-hook 'LaTeX-mode-hook 'global-auto-complete-mode)

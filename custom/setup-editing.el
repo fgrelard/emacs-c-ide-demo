@@ -71,7 +71,7 @@
 (yas-global-mode 1)
 
 ;; PACKAGE: smartparens
-(require 'smartparens-config)
+;;(require 'smartparens-config)
 ;; (setq sp-base-key-bindings 'paredit)
 ;; (setq sp-autoskip-closing-pair 'always)
 ;; (setq sp-hybrid-kill-entire-symbol nil)
