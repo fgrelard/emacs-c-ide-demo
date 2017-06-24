@@ -19,6 +19,7 @@
     company-irony
     company-irony-c-headers
     company
+    company-auctex
     dtrt-indent
     duplicate-thing
     flycheck-irony
@@ -40,6 +41,8 @@
     auctex
     latex-math-preview
     latex-preview-pane
+    latex-pretty-symbols
+    magit
     markdown-mode
     math-symbol-lists
     multiple-cursors
@@ -244,14 +247,25 @@
  '(TeX-save-query nil)
  '(c-basic-offset 4)
  '(flycheck-c/c++-gcc-executable nil)
- '(flycheck-gcc-definitions (quote ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
- '(flycheck-gcc-include-path (quote ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
+ '(flycheck-gcc-definitions
+   (quote
+    ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
+ '(flycheck-gcc-include-path
+   (quote
+    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/fgrelard/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
  '(flycheck-gcc-language-standard "c++11")
  '(flycheck-gcc-openmp t)
- '(irony-cdb-compilation-databases (quote (irony-cdb-clang-complete irony-cdb-libclang irony-cdb-json)))
+ '(irony-cdb-compilation-databases
+   (quote
+    (irony-cdb-clang-complete irony-cdb-libclang irony-cdb-json)))
  '(lpr-command "gtklp")
+ '(package-selected-packages
+   (quote
+    (latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
- '(projectile-globally-ignored-directories (quote (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
+ '(projectile-globally-ignored-directories
+   (quote
+    (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
  '(projectile-globally-ignored-files (quote ("TAGS")))
  '(ps-lpr-command "gtklp"))
 (custom-set-faces
@@ -285,7 +299,7 @@
 (load "pdf-tools")
 ;; If you want synctex support, this should be sufficient assuming
 ;; you are using LaTeX-mode
-(add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+(add-hook 'TeX-latex-mode-hook 'TeX-source-correlate-mode)
 (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
            #'TeX-view)
 (set-face-attribute 'default nil :height 110)
@@ -307,4 +321,12 @@
 (ac-config-default)
 (setq ac-auto-start nil)            ; if t starts ac at startup automatically
 (setq ac-auto-show-menu t)
+(add-hook 'LaTeX-mode-hook 'global-company-mode)
+(add-hook 'LaTeX-mode-hook 'company-auctex)
+(add-hook 'LaTeX-mode-hook 'company-auctex-init)
 (add-hook 'LaTeX-mode-hook 'global-auto-complete-mode)
+(add-hook 'TeX-mode-hook 'global-company-mode)
+(add-hook 'TeX-latex-mode-hook 'company-auctex)
+(add-hook 'TeX-latex-mode-hook 'company-auctex-init)
+(add-hook 'TeX-latex-mode-hook 'global-auto-complete-mode)
+(require 'latex-pretty-symbols)
