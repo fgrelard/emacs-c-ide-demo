@@ -44,6 +44,7 @@
     latex-pretty-symbols
     magit
     markdown-mode
+    magic-latex-buffer
     math-symbol-lists
     multiple-cursors
     pdf-tools
@@ -262,7 +263,7 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(projectile-globally-ignored-directories
    (quote
@@ -328,10 +329,18 @@
 ;; (add-hook 'LaTeX-mode-hook 'global-auto-complete-mode)
 ;; (add-hook 'TeX-mode-hook 'global-company-mode)
 (add-hook 'LaTeX-mode-hook 'reftex-mode)
-(require 'latex-pretty-symbols)
 (setq reftex-ref-macro-prompt nil)
 
 (define-minor-mode locked-buffer-mode
   "Make the current window always display this buffer."
   nil " locked" nil
   (set-window-dedicated-p (selected-window) locked-buffer-mode))
+
+(require 'magic-latex-buffer)
+(setq magic-latex-enable-block-highlight nil
+      magic-latex-enable-suscript        t
+      magic-latex-enable-pretty-symbols  t
+      magic-latex-enable-block-align     nil
+      magic-latex-enable-inline-image    nil
+      magic-latex-enable-minibuffer-echo nil)
+(add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
