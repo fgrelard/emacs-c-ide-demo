@@ -338,6 +338,7 @@
   (set-window-dedicated-p (selected-window) locked-buffer-mode))
 
 (setq TeX-clean-confirm nil)
+(setq sentence-end-double-space nil)
 
 (require 'magic-latex-buffer)
 (setq magic-latex-enable-block-highlight nil
