@@ -237,6 +237,11 @@
 (setq show-paren-delay 0)
 (show-paren-mode 1)
 
+
+ (if (not (require 'emacs-custom nil t))
+     (message "Warning: emacs-custom file not yet created")
+   )
+
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
 (custom-set-variables
@@ -248,15 +253,6 @@
  '(TeX-engine (quote default))
  '(TeX-save-query nil)
  '(c-basic-offset 4)
- '(flycheck-c/c++-gcc-executable nil)
- '(flycheck-gcc-definitions
-   (quote
-    ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
- '(flycheck-gcc-include-path
-   (quote
-    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
- '(flycheck-gcc-language-standard "c++11")
- '(flycheck-gcc-openmp t)
  '(irony-cdb-compilation-databases
    (quote
     (irony-cdb-clang-complete irony-cdb-libclang irony-cdb-json)))
