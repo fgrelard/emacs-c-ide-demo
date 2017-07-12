@@ -339,6 +339,7 @@
 
 (setq TeX-clean-confirm nil)
 (setq sentence-end-double-space nil)
+(setq compilation-scroll-output 'first-error)
 
 (require 'magic-latex-buffer)
 (setq magic-latex-enable-block-highlight nil
