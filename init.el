@@ -253,6 +253,15 @@
  '(TeX-engine (quote default))
  '(TeX-save-query nil)
  '(c-basic-offset 4)
+ '(flycheck-c/c++-gcc-executable nil)
+ '(flycheck-gcc-definitions
+   (quote
+    ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
+ '(flycheck-gcc-include-path
+   (quote
+    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
+ '(flycheck-gcc-language-standard "c++11")
+ '(flycheck-gcc-openmp t)
  '(irony-cdb-compilation-databases
    (quote
     (irony-cdb-clang-complete irony-cdb-libclang irony-cdb-json)))
@@ -262,11 +271,15 @@
     (workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
+ '(preview-auto-cache-preamble (quote ask))
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
  '(projectile-globally-ignored-files (quote ("TAGS")))
- '(ps-lpr-command "gtklp"))
+ '(ps-lpr-command "gtklp")
+ '(send-mail-function (quote smtpmail-send-it))
+ '(smtpmail-smtp-server "smtpauth.u-bordeaux.fr")
+ '(smtpmail-smtp-service 587))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -336,6 +349,8 @@
 (setq TeX-clean-confirm nil)
 (setq sentence-end-double-space nil)
 (setq compilation-scroll-output 'first-error)
+
+(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
 
 (require 'magic-latex-buffer)
 (setq magic-latex-enable-block-highlight nil
