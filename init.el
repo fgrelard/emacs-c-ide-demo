@@ -252,6 +252,7 @@
  '(TeX-PDF-mode t)
  '(TeX-engine (quote default))
  '(TeX-save-query nil)
+ '(bibtex-completion-bibliography (quote ("~/Documents/Manuscrit/these.bib")))
  '(c-basic-offset 4)
  '(flycheck-c/c++-gcc-executable nil)
  '(flycheck-gcc-definitions
@@ -268,7 +269,7 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
  '(preview-auto-cache-preamble (quote ask))
@@ -360,3 +361,15 @@
       magic-latex-enable-inline-image    nil
       magic-latex-enable-minibuffer-echo nil)
 (add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
+
+;;(setq bibtex-completion-cite-default-as-initial-input nil)
+(setq bibtex-completion-cite-prompt-for-optional-arguments nil)
+
+(eval-after-load "reftex"
+  '(define-key  reftex-mode-map (kbd "C-c [") nil))
+(eval-after-load "reftex"
+  '(define-key LaTeX-mode-map (kbd "C-c [") 'helm-bibtex))
+
+(with-eval-after-load 'helm-bibtex
+  (helm-delete-action-from-source "Insert citation" helm-source-bibtex)
+  (helm-add-action-to-source "Insert citation" 'helm-bibtex-insert-citation helm-source-bibtex 0))
