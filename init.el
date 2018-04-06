@@ -62,7 +62,12 @@
     volatile-highlights
     ws-butler
     yasnippet
-    zygospore))
+    zygospore
+    js2-mode
+    js2-refactor
+    company-tern
+    json-mode
+    tern-auto-complete))
 
 (defun install-packages ()
   "Install all required packages."
@@ -261,7 +266,7 @@
     ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
  '(flycheck-gcc-include-path
    (quote
-    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/")))
+    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/" "/home/florent/src/opencv/include/")))
  '(flycheck-gcc-language-standard "c++11")
  '(flycheck-gcc-openmp t)
  '(irony-cdb-compilation-databases
@@ -371,6 +376,37 @@
 ;; (eval-after-load "reftex"
 ;;   '(define-key LaTeX-mode-map (kbd "C-c [") 'helm-bibtex))
 
-;; (with-eval-after-load 'helm-bibtex
-;;   (helm-delete-action-from-source "Insert citation" helm-source-bibtex)
-;;   (helm-add-action-to-source "Insert citation" 'helm-bibtex-insert-citation helm-source-bibtex 0))
+
+(with-eval-after-load 'helm-bibtex
+  (helm-delete-action-from-source "Insert citation" helm-source-bibtex)
+  (helm-add-action-to-source "Insert citation" 'helm-bibtex-insert-citation helm-source-bibtex 0))
+
+
+;; javascript
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(require 'company-tern)
+;; Better imenu
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+(require 'js2-refactor)
+
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+(define-key js2-mode-map (kbd "C-c C-c") 'comment-region)
+
+;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; unbind it.
+
+
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'js2-mode-hook (lambda ()
+                           (tern-mode)
+                           (company-mode)))
+
+;; (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
+;; (eval-after-load 'tern
+;;    '(progn
+;;       (require 'tern-auto-complete)
+;;       (tern-ac-setup)))
+;; Disable completion keybindings, as we use xref-js2 instead
