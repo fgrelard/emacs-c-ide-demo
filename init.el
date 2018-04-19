@@ -68,7 +68,8 @@
     company-tern
     json-mode
     tern-auto-complete
-    use-package))
+    use-package
+    js-doc))
 
 (defun install-packages ()
   "Install all required packages."
