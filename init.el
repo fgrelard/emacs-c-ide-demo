@@ -1,5 +1,5 @@
 (require 'package)
-1(add-to-list 'package-archives
+(add-to-list 'package-archives
 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
@@ -182,9 +182,6 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-
-
-
 ;; Package: projectile
 (require 'projectile)
 (add-hook 'c++-mode-hook 'projectile-global-mode)
@@ -258,11 +255,11 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(LaTeX-math-abbrev-prefix "œ")
+ '(LaTeX-math-abbrev-prefix "²")
  '(TeX-PDF-mode t)
  '(TeX-engine (quote default))
  '(TeX-save-query nil)
- '(bibtex-completion-bibliography (quote ("~/Documents/ManuscritThese/these.bib")))
+ '(bibtex-completion-bibliography (quote ("~/Documents/ASTree/abstract/abstract.bib")))
  '(c-basic-offset 4)
  '(flycheck-c/c++-gcc-executable nil)
  '(flycheck-gcc-definitions
@@ -283,6 +280,7 @@
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
  '(preview-auto-cache-preamble (quote ask))
+ '(processing-location "/usr/share/processing/processing-3\.4/processing-java")
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
@@ -300,6 +298,7 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (add-to-list 'auto-mode-alist '("\\.ih\\'" . c++-mode))
 
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . latex-mode))
 (eval-after-load "tex"
   '(progn
      (setcdr (assq 'output-pdf TeX-view-program-selection) '("PDF Tools"))
@@ -408,3 +407,12 @@
 
 ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
 ;; unbind it.
+
+;;python
+(add-hook 'python-mode-hook
+          (lambda () (define-key python-mode-map (kbd "C-c C-b") 'python-shell-send-buffer)))
+
+;;processing
+(eval-after-load 'processing-mode
+  '(define-key processing-mode-map (kbd "<f1>") 'processing-sketch-run))
+(add-hook 'processing-mode-hook 'flycheck-mode)
