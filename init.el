@@ -69,6 +69,8 @@
     json-mode
     tern-auto-complete
     use-package
+    processing-snippets
+    processing-mode
     js-doc))
 
 (defun install-packages ()
