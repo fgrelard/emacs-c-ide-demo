@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: frameseq
+# key: frameseq
+# --
+\begin{frame}
+    \SequenceTitle{$1}
+    $0
+\end{frame}

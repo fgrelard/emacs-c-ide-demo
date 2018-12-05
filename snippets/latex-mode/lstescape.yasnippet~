@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: §
+# key: §
+# --
+§\textsc{$1}§$0

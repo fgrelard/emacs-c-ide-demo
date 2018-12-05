@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: subfigure
+# key: subfigure
+# --
+\begin{subfigure}[t]{0.${1:5}\textwidth}
+    \centering
+    \includegraphics[width=0.${2:9}\textwidth]{fig/$3}
+    \caption{}
+    \label{subfig:$3}
+\end{subfigure}%
