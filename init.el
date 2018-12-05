@@ -68,7 +68,8 @@
     company-tern
     json-mode
     tern-auto-complete
-    use-package))
+    use-package
+    js-doc))
 
 (defun install-packages ()
   "Install all required packages."
@@ -278,7 +279,7 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
  '(preview-auto-cache-preamble (quote ask))
