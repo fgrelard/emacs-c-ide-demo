@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: returns
+# key: returns
+# type: command
+# --
+Returns
+----------
+$0

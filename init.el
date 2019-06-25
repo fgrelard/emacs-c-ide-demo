@@ -101,6 +101,7 @@
 (bind-key* "C-c C-c" 'comment-or-uncomment-region)
 
 (setq-default c-basic-offset 4)
+
 (setq-default tab-width 4)
 
 (add-hook 'sh-mode-hook (lambda ()
@@ -250,8 +251,11 @@
      (message "Warning: emacs-custom file not yet created")
    )
 
+
 ;; Package zygospore
 (global-set-key (kbd "C-x 1") 'zygospore-toggle-delete-other-windows)
+
+(tool-bar-mode -1)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -263,6 +267,7 @@
  '(TeX-save-query nil)
  '(bibtex-completion-bibliography (quote ("~/Documents/ASTree/abstract/abstract.bib")))
  '(c-basic-offset 4)
+ '(custom-enabled-themes (quote (wombat)))
  '(flycheck-c/c++-gcc-executable nil)
  '(flycheck-gcc-definitions
    (quote
@@ -278,11 +283,11 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (yasnippet-snippets python-docstring sphinx-mode sphinx-doc elpy matlab-mode company-jedi js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
  '(preview-auto-cache-preamble (quote ask))
- '(processing-location "/usr/share/processing/processing-3\.4/processing-java")
+ '(processing-location "/usr/share/processing/processing-3.4/processing-java")
  '(projectile-globally-ignored-directories
    (quote
     (".idea" ".eunit" ".git" ".hg" ".fslckout" ".bzr" "_darcs" ".tox" ".svn" ".stack-work" "build/" "CMakeFiles/")))
@@ -410,11 +415,35 @@
 ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
 ;; unbind it.
 
-;;python
-(add-hook 'python-mode-hook
-          (lambda () (define-key python-mode-map (kbd "C-c C-b") 'python-shell-send-buffer)))
 
 ;;processing
 (eval-after-load 'processing-mode
   '(define-key processing-mode-map (kbd "<f1>") 'processing-sketch-run))
 (add-hook 'processing-mode-hook 'flycheck-mode)
+
+;;python
+
+(use-package elpy
+  :ensure t
+  :init
+  :config
+  (setq elpy-rpc-python-command "python3")
+  (setq python-shell-interpreter "python3")
+  (defun custom-python-mode-hook ()
+    (setq python-indent-offset 4)
+    (setq tab-width 4)
+    (setq indent-tabs-mode nil)
+    (elpy-enable))
+(add-hook 'python-mode-hook 'custom-python-mode-hook))
+(add-hook 'python-mode-hook 'elpy-mode)
+
+(use-package company-jedi
+  :ensure t)
+
+(require 'elpy-mode)
+(defun my/python-mode-hook ()
+  (add-to-list 'company-backends 'company-jedi))
+(add-hook 'python-mode-hook 'my/python-mode-hook)
+
+(add-hook 'python-mode-hook 'global-company-mode)
+(setq yas-triggers-in-field t)
