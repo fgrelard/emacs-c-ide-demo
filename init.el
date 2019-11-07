@@ -274,12 +274,13 @@
                    company-oddmuse company-dabbrev)))
  '(custom-enabled-themes (quote (wombat)))
  '(flycheck-c/c++-gcc-executable "c/c++-clang")
+ '(flycheck-clang-args (quote ("-fPIC")))
  '(flycheck-clang-definitions
    (quote
-    ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true" "WITH_QT5=true")))
+    ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true" "WITH_QT5=true" "WITH_VISU3D_QGLVIEWER=true")))
  '(flycheck-clang-include-path
    (quote
-    ("/usr/include/eigen3/" "/usr/include/x86_64-linux-gnu/qt5/" "/usr/include/boost" "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent" "/usr/include/x86_64-linux-gnu/qt5/QtCore" "/usr/include/x86_64-linux-gnu/qt5/QtDBus" "/usr/include/x86_64-linux-gnu/qt5/QtGui" "/usr/include/x86_64-linux-gnu/qt5/QtNetwork" "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL" "/usr/include/x86_64-linux-gnu/qt5/QtSql" "/usr/include/x86_64-linux-gnu/qt5/QtSvg" "/usr/include/x86_64-linux-gnu/qt5/QtWidgets" "/usr/include/x86_64-linux-gnu/qt5/QtXml" "/home/fgrelard/src/MyDGtalContrib/src/" "/usr/local/include/ITK-5.1/" "/home/florent/src/opencv/include/")))
+    ("/usr/include/eigen3/" "/usr/include/x86_64-linux-gnu/qt5/" "/usr/include/boost" "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent" "/usr/include/x86_64-linux-gnu/qt5/QtCore" "/usr/include/x86_64-linux-gnu/qt5/QtDBus" "/usr/include/x86_64-linux-gnu/qt5/QtGui" "/usr/include/x86_64-linux-gnu/qt5/QtNetwork" "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL" "/usr/include/x86_64-linux-gnu/qt5/QtOpenGLExtensions" "/usr/include/x86_64-linux-gnu/qt5/QtPlatformHeaders" "/usr/include/x86_64-linux-gnu/qt5/QtPrintSupport" "/usr/include/x86_64-linux-gnu/qt5/QtSql" "/usr/include/x86_64-linux-gnu/qt5/QtSvg" "/usr/include/x86_64-linux-gnu/qt5/QtWidgets" "/usr/include/x86_64-linux-gnu/qt5/QtXml" "/usr/local/include/DGtal/" "/home/fgrelard/src/MyDGtalContrib/src/" "/usr/local/include/ITK-5.1/" "/home/florent/src/opencv/include/")))
  '(flycheck-clang-language-standard "c++11")
  '(flycheck-gcc-openmp t)
  '(irony-cdb-compilation-databases
