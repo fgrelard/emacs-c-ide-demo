@@ -267,15 +267,20 @@
  '(TeX-save-query nil)
  '(bibtex-completion-bibliography (quote ("~/Documents/ASTree/abstract/abstract.bib")))
  '(c-basic-offset 4)
+ '(company-backends
+   (quote
+    (company-irony company-bbdb company-nxml company-css company-eclim company-xcode company-cmake company-capf company-files
+                   (company-dabbrev-code company-gtags company-etags company-keywords)
+                   company-oddmuse company-dabbrev)))
  '(custom-enabled-themes (quote (wombat)))
- '(flycheck-c/c++-gcc-executable nil)
- '(flycheck-gcc-definitions
+ '(flycheck-c/c++-gcc-executable "c/c++-clang")
+ '(flycheck-clang-definitions
    (quote
     ("WITH_EIGEN=true" "WITH_CGAL=true" "WITH_GMP=true" "WITH_ITK=true")))
- '(flycheck-gcc-include-path
+ '(flycheck-clang-include-path
    (quote
-    ("/usr/include/eigen3/" "/usr/include/qt4/" "/usr/include/boost" "/usr/include/qt4/Qt" "/usr/include/qt4/Qt3Support" "/usr/include/qt4/QtCore" "/usr/include/qt4/QtDBus" "/usr/include/qt4/QtDeclarative" "/usr/include/qt4/QtDesigner" "/usr/include/qt4/QtGui" "/usr/include/qt4/QtHelp" "/usr/include/qt4/QtNetwork" "/usr/include/qt4/QtOpenGL" "/usr/include/qt4/QtScript" "/usr/include/qt4/QtScriptTools" "/usr/include/qt4/QtSql" "/usr/include/qt4/QtSvg" "/usr/include/qt4/QtTest" "/usr/include/qt4/QtUiTools" "/usr/include/qt4/QtWebKit" "/usr/include/qt4/QtXml" "/usr/include/qt4/QtXmlPatterns" "/home/florent/Code/MyDGtalContrib/src/" "/usr/local/include/ITK-4.10/" "/home/florent/src/opencv/include/")))
- '(flycheck-gcc-language-standard "c++11")
+    ("/usr/include/eigen3/" "/usr/include/x86_64-linux-gnu/qt5/" "/usr/include/boost" "/usr/include/x86_64-linux-gnu/qt5/QtConcurrent" "/usr/include/x86_64-linux-gnu/qt5/QtCore" "/usr/include/x86_64-linux-gnu/qt5/QtDBus" "/usr/include/x86_64-linux-gnu/qt5/QtGui" "/usr/include/x86_64-linux-gnu/qt5/QtNetwork" "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL" "/usr/include/x86_64-linux-gnu/qt5/QtSql" "/usr/include/x86_64-linux-gnu/qt5/QtSvg" "/usr/include/x86_64-linux-gnu/qt5/QtWidgets" "/usr/include/x86_64-linux-gnu/qt5/QtXml" "/home/fgrelard/src/MyDGtalContrib/src/" "/usr/local/include/ITK-5.1/" "/home/florent/src/opencv/include/")))
+ '(flycheck-clang-language-standard "c++11")
  '(flycheck-gcc-openmp t)
  '(irony-cdb-compilation-databases
    (quote
@@ -283,7 +288,7 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (yasnippet-snippets python-docstring sphinx-mode sphinx-doc elpy matlab-mode company-jedi js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (flycheck-pycheckers vlf yasnippet-snippets python-docstring sphinx-mode sphinx-doc elpy matlab-mode company-jedi js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
  '(pdf-misc-print-programm "/usr/bin/gtklp")
  '(preview-auto-cache-preamble (quote ask))
@@ -391,7 +396,6 @@
   (helm-delete-action-from-source "Insert citation" helm-source-bibtex)
   (helm-add-action-to-source "Insert citation" 'helm-bibtex-insert-citation helm-source-bibtex 0))
 
-
 ;; javascript
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -422,7 +426,6 @@
 (add-hook 'processing-mode-hook 'flycheck-mode)
 
 ;;python
-
 (use-package elpy
   :ensure t
   :init
@@ -434,16 +437,31 @@
     (setq tab-width 4)
     (setq indent-tabs-mode nil)
     (elpy-enable))
-(add-hook 'python-mode-hook 'custom-python-mode-hook))
-(add-hook 'python-mode-hook 'elpy-mode)
 
 (use-package company-jedi
   :ensure t)
 
-(require 'elpy-mode)
+;;(require 'elpy-mode)
 (defun my/python-mode-hook ()
   (add-to-list 'company-backends 'company-jedi))
+
+(defun flycheck-python-mode-hook ()
+  (use-package flycheck-pycheckers
+  :init
+  (with-eval-after-load 'flycheck
+    (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))))
+
+
+(add-hook 'python-mode-hook 'custom-python-mode-hook))
+(add-hook 'python-mode-hook 'elpy-mode)
+
 (add-hook 'python-mode-hook 'my/python-mode-hook)
 
 (add-hook 'python-mode-hook 'global-company-mode)
+(add-hook 'python-mode-hook
+          (lambda()
+            (define-key python-mode-map (kbd "M-.") 'elpy-goto-definition)))
+;;;(add-hook 'python-mode-hook 'flycheck-mode)
+;;;(add-hook 'python-mode-hook 'flycheck-python-mode-hook)
+
 (setq yas-triggers-in-field t)
