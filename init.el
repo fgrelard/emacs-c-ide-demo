@@ -71,7 +71,9 @@
     use-package
     processing-snippets
     processing-mode
-    js-doc))
+    js-doc
+    elpy
+    pyvenv))
 
 (defun install-packages ()
   "Install all required packages."
