@@ -1,6 +1,6 @@
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+	     '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 (setq gc-cons-threshold 100000000)
@@ -65,7 +65,7 @@
     zygospore
     js2-mode
     js2-refactor
-    company-tern
+;;  company-tern
     json-mode
     tern-auto-complete
     use-package
@@ -291,9 +291,10 @@
  '(lpr-command "gtklp")
  '(package-selected-packages
    (quote
-    (flycheck-pycheckers vlf yasnippet-snippets python-docstring sphinx-mode sphinx-doc elpy matlab-mode company-jedi js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
+    (ein flycheck-pycheckers vlf yasnippet-snippets python-docstring sphinx-mode sphinx-doc elpy matlab-mode company-jedi js-doc jade-mode emmet-mode dash helm-descbinds helm-bibtexkey helm-bibtex workgroups2 magic-latex-buffer cmake-mode latex-pretty-symbols auctex-lua auto-complete-auctex company-auctex magithub magit zygospore yasnippet ws-butler volatile-highlights undo-tree pdf-tools multiple-cursors markdown-mode latex-preview-pane latex-math-preview latex-extra iedit helm-swoop helm-projectile helm-gtags github-browse-file ggtags function-args flymake-cppcheck flycheck-irony duplicate-thing dtrt-indent company-irony-c-headers company-irony comment-dwim-2 clean-aindent-mode buffer-move anzu ac-math ac-c-headers)))
  '(pdf-latex-command "pdflatex")
- '(pdf-misc-print-programm "/usr/bin/gtklp")
+ '(pdf-misc-print-program "/usr/bin/gtklp" t)
+ '(pdf-misc-print-programm "/usr/bin/gtklp" t)
  '(preview-auto-cache-preamble (quote ask))
  '(processing-location "/usr/share/processing/processing-3.4/processing-java")
  '(projectile-globally-ignored-directories
@@ -432,30 +433,31 @@
 (use-package elpy
   :ensure t
   :init
+  (elpy-enable)
   :config
   (setq elpy-rpc-python-command "python3")
   (setq python-shell-interpreter "python3")
+
   (defun custom-python-mode-hook ()
     (setq python-indent-offset 4)
     (setq tab-width 4)
     (setq indent-tabs-mode nil)
     (elpy-enable))
 
-(use-package company-jedi
-  :ensure t)
+  (use-package company-jedi
+    :ensure t)
 
-;;(require 'elpy-mode)
-(defun my/python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
+  ;;(require 'elpy-mode)
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
 
-(defun flycheck-python-mode-hook ()
-  (use-package flycheck-pycheckers
-  :init
-  (with-eval-after-load 'flycheck
-    (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))))
+  (defun flycheck-python-mode-hook ()
+    (use-package flycheck-pycheckers
+      :init
+      (with-eval-after-load 'flycheck
+        (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)))))
 
-
-(add-hook 'python-mode-hook 'custom-python-mode-hook))
+(add-hook 'python-mode-hook 'custom-python-mode-hook)
 (add-hook 'python-mode-hook 'elpy-mode)
 
 (add-hook 'python-mode-hook 'my/python-mode-hook)
